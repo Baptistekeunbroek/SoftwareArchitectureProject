@@ -1,24 +1,23 @@
 const express = require("express");
 const router = express.Router();
-const Order = require("../models/Order");
+
+// In-memory storage for orders
+let orders = [];
 
 // Place an order
-router.post("/place", async (req, res) => {
+router.post("/place", (req, res) => {
   const { items, customerInfo, parkId, alleyNumber } = req.body;
-  try {
-    const newOrder = new Order({
-      items,
-      customerInfo,
-      parkId,
-      alleyNumber,
-    });
-    const savedOrder = await newOrder.save();
-    res.json(savedOrder);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
-  }
+  const order = { items, customerInfo, parkId, alleyNumber };
+  orders.push(order);
+  res.json(order);
 });
+
+// Get all orders
+router.get("/", (req, res) => {
+  res.json(orders);
+});
+
+module.exports = router;
 
 const stripe = require("stripe")("your_stripe_secret_key");
 

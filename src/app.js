@@ -19,6 +19,8 @@ app.use(passport.session());
 
 // Routes
 app.use("/auth", authRouter);
+app.use("/api/orders", require("./routes/orders"));
+app.use("/api/auth", require("./routes/auth"));
 
 // Start the server
 const PORT = process.env.PORT || 3000;

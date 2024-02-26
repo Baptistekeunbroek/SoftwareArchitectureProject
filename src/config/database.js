@@ -1,16 +1,9 @@
-const mongoose = require("mongoose");
+const products = [
+  new Product(1, "Drink", 3.5, "Refreshing beverage", "Beverages"),
+  new Product(2, "Snack", 5.0, "Delicious snack", "Snacks"),
+  new Product(3, "Dessert", 7.99, "Sweet treat", "Desserts"),
+];
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect("mongodb://localhost:27017/yourDatabaseName", {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("MongoDB Connected...");
-  } catch (err) {
-    console.error(err.message);
-    process.exit(1); // Exit process with failure
-  }
+module.exports = {
+  products,
 };
-
-module.exports = connectDB;
