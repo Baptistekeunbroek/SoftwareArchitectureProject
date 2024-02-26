@@ -1,9 +1,7 @@
-// Import necessary modules or libraries here
+const app = require("./src/app.js");
 
-// Define your main function or entry point here
-function main() {
-  // Your code goes here
-}
+const PORT = process.env.PORT || 3000;
 
-// Call the main function to start your program
-main();
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
+});

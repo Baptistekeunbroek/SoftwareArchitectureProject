@@ -1,3 +1,5 @@
+const Product = require("../models/product");
+
 const products = [
   new Product(1, "Drink", 3.5, "Refreshing beverage", "Beverages"),
   new Product(2, "Snack", 5.0, "Delicious snack", "Snacks"),

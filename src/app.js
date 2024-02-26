@@ -2,6 +2,9 @@ const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
 const authRouter = require("./routes/auth");
+const ordersRouter = require("./routes/orders");
+const productsRouter = require("./routes/products");
+//const paymentRouter = require("./routes/payment");
 const app = express();
 
 // Session middleware
@@ -19,13 +22,8 @@ app.use(passport.session());
 
 // Routes
 app.use("/auth", authRouter);
-app.use("/api/orders", require("./routes/orders"));
-app.use("/api/auth", require("./routes/auth"));
-app.use("/api/products", require("./routes/products"));
-app.use("/api/payment", require("./routes/payment"));
+app.use("/api/orders", ordersRouter);
+app.use("/api/products", productsRouter);
+//app.use("/api/payment", paymentRouter);
 
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+module.exports = app;

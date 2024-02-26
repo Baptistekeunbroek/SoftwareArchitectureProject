@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { products, Product } = require("../models/Product");
+const { products } = require("../config/database");
+const Product = require("../models/Product");
 
 // Get all products
 router.get("/", (req, res) => {

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { products } = require("../models/Product");
+const { Product } = require("../models/Product");
 
 // In-memory storage for orders
 let orders = [];
