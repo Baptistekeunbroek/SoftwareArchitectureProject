@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const User = require("../models/User");
 
 // In-memory storage for users
 let users = [];
@@ -7,19 +8,24 @@ let users = [];
 // Register a new user
 router.post("/register", (req, res) => {
   const { username, email, password } = req.body;
-  const newUser = {
-    id: users.length + 1,
-    username,
-    email,
-    password,
-  };
+  // Here you can validate username, email, password, etc.
+  const newUser = new User(users.length + 1, username, email, password);
   users.push(newUser);
   res.json(newUser);
 });
 
-// Get all users (for testing purposes)
-router.get("/", (req, res) => {
-  res.json(users);
+// Login user (dummy implementation)
+router.post("/login", (req, res) => {
+  const { email, password } = req.body;
+  // Here you can implement actual login logic, like checking credentials against stored users
+  const user = users.find(
+    (user) => user.email === email && user.password === password
+  );
+  if (user) {
+    res.json({ message: "Login successful", user });
+  } else {
+    res.status(401).json({ message: "Invalid credentials" });
+  }
 });
 
 module.exports = router;
