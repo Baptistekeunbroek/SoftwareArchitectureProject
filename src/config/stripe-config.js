@@ -1,4 +1,3 @@
-// stripe-config.js
-const stripe = require("stripe")("your_secret_stripe_key");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 module.exports = stripe;

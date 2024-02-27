@@ -4,9 +4,11 @@ const passport = require("passport");
 const authRouter = require("./routes/auth");
 const ordersRouter = require("./routes/orders");
 const productsRouter = require("./routes/products");
+const paymentRouter = require("./routes/payment");
 const bodyParser = require("body-parser");
 
-const paymentRouter = require("./routes/payment");
+require("dotenv").config();
+
 const app = express();
 
 // Session middleware

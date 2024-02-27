@@ -78,18 +78,6 @@ router.get("/", (req, res) => {
 module.exports = router;
 
 /*
-// Place an order
-router.post("/place", (req, res) => {
-  const { items, customerInfo, parkId, alleyNumber } = req.body;
-  // Here you can validate items, customerInfo, etc.
-  const order = { items, customerInfo, parkId, alleyNumber };
-  orders.push(order);
-  res.json(order);
-});
-
-
-
-module.exports = router;
 
 const stripe = require("stripe")("your_stripe_secret_key");
 

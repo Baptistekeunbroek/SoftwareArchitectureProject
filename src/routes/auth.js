@@ -14,10 +14,9 @@ router.post("/register", (req, res) => {
   res.json(newUser);
 });
 
-// Login user (dummy implementation)
+// Login user
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
-  // Here you can implement actual login logic, like checking credentials against stored users
   const user = users.find(
     (user) => user.email === email && user.password === password
   );
