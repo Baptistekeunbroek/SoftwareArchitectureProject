@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const { products } = require("../config/database");
 const Product = require("../models/Product");
+const User = require("../models/Product");
+
+const { isAgent } = require("../config/passport-config");
 
 // Get all products
 router.get("/", (req, res) => {
@@ -9,7 +12,7 @@ router.get("/", (req, res) => {
 });
 
 // Add a new product
-router.post("/add", (req, res) => {
+router.post("/add", isAgent, (req, res) => {
   const { name, price, description, category } = req.body;
   const newProduct = new Product(
     products.length + 1,
@@ -23,7 +26,7 @@ router.post("/add", (req, res) => {
 });
 
 // Update an existing product
-router.put("/update/:id", (req, res) => {
+router.put("/update/:id", isAgent, (req, res) => {
   const productId = parseInt(req.params.id);
   const { name, price, description, category } = req.body;
   const index = products.findIndex((product) => product.id === productId);
@@ -36,7 +39,7 @@ router.put("/update/:id", (req, res) => {
 });
 
 // Delete a product
-router.delete("/delete/:id", (req, res) => {
+router.delete("/delete/:id", isAgent, (req, res) => {
   const productId = parseInt(req.params.id);
   const index = products.findIndex((product) => product.id === productId);
   if (index !== -1) {

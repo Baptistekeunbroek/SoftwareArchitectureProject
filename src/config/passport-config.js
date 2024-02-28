@@ -39,3 +39,15 @@ passport.deserializeUser(async (id, done) => {
     done(err);
   }
 });
+
+// Function to check if user is an agent
+const isAgent = (req, res, next) => {
+  // Hardcoded role for testing purposes
+  req.user = { role: "agent" };
+
+  if (req.user && req.user.role === "agent") {
+    return next();
+  }
+  res.status(403).json({ message: "Unauthorized access" });
+};
+module.exports = { passport, isAgent };

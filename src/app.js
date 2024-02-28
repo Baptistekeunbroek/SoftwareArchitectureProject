@@ -8,6 +8,7 @@ const paymentRouter = require("./routes/payment");
 const bodyParser = require("body-parser");
 
 require("dotenv").config();
+global.users = [];
 
 const app = express();
 
