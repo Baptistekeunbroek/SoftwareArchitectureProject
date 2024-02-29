@@ -1,10 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { products } = require("../config/database");
-const Product = require("../models/Product");
-const User = require("../models/Product");
-
-const { isAgent } = require("../config/passport-config");
+const { Product, products } = require("../database/products");
+//const { isAgent } = require("../config/passport-config");
 
 // Get all products
 router.get("/", (req, res) => {
@@ -12,7 +9,7 @@ router.get("/", (req, res) => {
 });
 
 // Add a new product
-router.post("/add", isAgent, (req, res) => {
+router.post("/add", (req, res) => {
   const { name, price, description, category } = req.body;
   const newProduct = new Product(
     products.length + 1,
@@ -26,7 +23,7 @@ router.post("/add", isAgent, (req, res) => {
 });
 
 // Update an existing product
-router.put("/update/:id", isAgent, (req, res) => {
+router.put("/update/:id", (req, res) => {
   const productId = parseInt(req.params.id);
   const { name, price, description, category } = req.body;
   const index = products.findIndex((product) => product.id === productId);
@@ -39,7 +36,7 @@ router.put("/update/:id", isAgent, (req, res) => {
 });
 
 // Delete a product
-router.delete("/delete/:id", isAgent, (req, res) => {
+router.delete("/delete/:id", (req, res) => {
   const productId = parseInt(req.params.id);
   const index = products.findIndex((product) => product.id === productId);
   if (index !== -1) {
