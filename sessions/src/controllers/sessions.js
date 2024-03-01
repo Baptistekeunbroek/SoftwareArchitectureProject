@@ -8,28 +8,44 @@ const {
   orderProduct,
 } = require("../database/sessions");
 
-router.post(
-  "/",
-  passport.authenticate(["user", "admin"], { session: false }),
-  async (req, res) => {
+// Middleware for session authentication
+const authenticateSession = passport.authenticate("session", {
+  session: false,
+});
+
+// Middleware for user or admin authentication
+const authenticateUserOrAgent = passport.authenticate(["agent"], {
+  session: false,
+});
+
+router.post("/", authenticateUserOrAgent, async (req, res) => {
+  try {
+    console.log("Query Params:", req.query); // Log query parameters
+    console.log("Body:", req.body);
     const user = req.user;
-    const parkId = parseInt(req.query.parkId, 10);
-    if (!parkId)
+    // Adjusted to read parkId from the request body
+    const parkId = parseInt(req.body.parkId, 10);
+    if (!parkId) {
       return res
         .status(400)
         .json({ message: "Park ID is required", ok: false });
+    }
     const session = await createSession(user.id, parkId);
-    if (!session)
+    if (!session) {
       return res
         .status(400)
         .json({ message: "No free alley available", ok: false });
+    }
     res.status(200).json({ message: "Session created", ok: true, session });
+  } catch (error) {
+    console.error("Error creating session:", error);
+    res.status(500).json({ message: "Internal server error", ok: false });
   }
-);
+});
 
 router.get(
   "/",
-  passport.authenticate(["user", "admin"], { session: false }),
+  authenticateUserOrAgent, // Apply user or admin authentication
   (req, res) => {
     const sessions = getSessions();
     res.status(200).json({ ok: true, sessions });
@@ -38,7 +54,7 @@ router.get(
 
 router.get(
   "/qrCode/:qrCode",
-  passport.authenticate(["session"], { session: false }),
+  authenticateSession, // Apply session authentication
   (req, res) => {
     const sessions = getSessions();
     const qrCode = req.params.qrCode;
@@ -55,7 +71,7 @@ router.get(
 
 router.post(
   "/join/:qrCode",
-  passport.authenticate(["admin"], { session: false }),
+  passport.authenticate("agent", { session: false }), // Apply admin authentication
   (req, res) => {
     const user = req.user;
     const parkId = parseInt(req.query.parkId, 10);
@@ -73,7 +89,7 @@ router.post(
 
 router.post(
   "/order/:qrCode",
-  passport.authenticate(["user", "admin"], { session: false }),
+  authenticateUserOrAgent, // Apply user or admin authentication
   async (req, res) => {
     const user = req.user;
     const qrCode = req.params.qrCode;
@@ -95,7 +111,7 @@ router.post(
 
 router.post(
   "/payment/:qrCode",
-  passport.authenticate(["user", "admin"], { session: false }),
+  authenticateUserOrAgent, // Apply user or admin authentication
   (req, res) => {
     const user = req.user;
     const amount = parseInt(req.query.amount, 10);

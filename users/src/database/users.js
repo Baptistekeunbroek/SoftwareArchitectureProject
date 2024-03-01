@@ -1,28 +1,18 @@
-class User {
-    constructor(id, username, email, password, role) {
-      this.id = id;
-      this.username = username;
-      this.email = email;
-      this.password = password;
-      this.role = role;
-    }
-  
-    static findByEmail(email) {
-      return users.find((user) => user.email === email);
-    }
-  
-    static findById(id) {
-      return global.users.find((user) => user.id === id);
-    }
-  
-    static findByRole(role) {
-      return global.users.filter((user) => user.role === role);
-    }
-  }
-
 const users = [
-  new User(1, "agent", "agent.agent@efrei", "test1234", "agent"),
-  new User(2, "customer", "customer.customer@efrei", "test1234", "customer"),
+  {
+    id: 1,
+    username: "agent",
+    email: "agent.agent@efrei",
+    password: "test1234",
+    role: "agent",
+  },
+  {
+    id: 2,
+    username: "customer",
+    email: "customer.customer@efrei",
+    password: "test1234",
+    role: "user",
+  },
 ];
 
-module.exports = { users, User };
+module.exports = { users };

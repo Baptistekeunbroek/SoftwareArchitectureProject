@@ -2,13 +2,33 @@ const alleys = [
   {
     parkId: 1,
     alleyNb: 1,
-    qrCode: "anubfajncajikclxjkqnujg",
+    qrCode: "thisisaqrcodecodecode",
+    isInUse: false,
+  },
+  {
+    parkId: 2,
+    alleyNb: 1,
+    qrCode: "anotherqrcodecode",
     isInUse: false,
   },
 ];
 
-const findFreeAlley = (parkId) =>
-  alleys.find((alley) => alley.isInUse === false && alley.parkId === parkId);
+const findAvailableAlley = (parkId) => {
+  console.log("Searching for available alley for park ID:", parkId);
+  console.log("All alleys:", alleys);
+
+  const availableAlley = alleys.find(
+    (alley) => alley.isInUse === false && alley.parkId === parkId
+  );
+
+  if (availableAlley) {
+    console.log("Available alley found:", availableAlley);
+  } else {
+    console.log("No available alley found for park ID:", parkId);
+  }
+
+  return availableAlley;
+};
 
 const modifyAlley = (parkId, alleyNb, isInUse) => {
   const alley = alleys.find(
@@ -23,6 +43,6 @@ const modifyAlley = (parkId, alleyNb, isInUse) => {
 };
 
 module.exports = {
-  findFreeAlley,
+  findAvailableAlley,
   modifyAlley,
 };

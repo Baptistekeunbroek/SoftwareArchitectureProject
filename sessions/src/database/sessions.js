@@ -1,5 +1,5 @@
+const { findAvailableAlley, modifyAlley } = require("./alleys");
 const apiProducts = require("../utils/apiProducts");
-const { findFreeAlley, modifyAlley } = require("./alleys");
 const sessions = [];
 
 let sessionNextId = 1;
@@ -11,31 +11,61 @@ const getSessions = () => sessions;
 
 const findSessionIndexById = (id) =>
   sessions.findIndex((session) => session.id === id);
-
 const createSession = async (userId, parkId) => {
-  const alley = findFreeAlley(parkId);
-  if (!alley) return false;
-  const bowlingSessionRes = await apiProducts.get(
-    `/findBowlingByParkId?parkId=${parkId}`
-  );
-  if (!bowlingSessionRes.ok) return false;
+  // First, find an available alley for the given parkId.
+  const alley = findAvailableAlley(parkId);
+  if (!alley) {
+    console.error(`No available alley found for parkId: ${parkId}`);
+    return { error: "No free alley available", ok: false };
+  }
 
-  const bowlingSession = bowlingSessionRes.product;
-  const session = {
-    id: sessionNextId,
-    ownerUserId: userId,
-    users: [userId],
-    parkId,
-    cartTotal: bowlingSession.price,
-    cartProductIds: [bowlingSession.id],
-    cartRemaingAmount: bowlingSession.price,
-    isStarted: false,
-    qrCode: alley.qrCode,
-  };
-  sessionNextId++;
-  sessions.push(session);
-  modifyAlley(parkId, alley.alleyNb, true);
-  return session;
+  try {
+    // Make the API call to get bowling session details.
+    const bowlingSessionRes = await apiProducts.get(
+      `/findBowlingByParkId?parkId=${parkId}`
+    );
+
+    // Check if the API call was successful and the response is OK.
+    if (!bowlingSessionRes.ok || !bowlingSessionRes.product) {
+      console.error(
+        `API call to findBowlingByParkId failed for parkId: ${parkId}`
+      );
+      return { error: "Error fetching bowling session details", ok: false };
+    }
+
+    const bowlingSession = bowlingSessionRes.product;
+
+    // Create the session object.
+    const session = {
+      id: sessionNextId++,
+      ownerUserId: userId,
+      users: [userId],
+      parkId,
+      cartTotal: bowlingSession.price,
+      cartProductIds: [bowlingSession.id],
+      cartRemainingAmount: bowlingSession.price,
+      isStarted: false,
+      qrCode: alley.qrCode,
+    };
+
+    // Add the session to the sessions array.
+    sessions.push(session);
+
+    // Mark the alley as in use.
+    modifyAlley(parkId, alley.alleyNb, true);
+
+    // Return the successfully created session.
+    return { ok: true, session };
+  } catch (error) {
+    console.error(
+      `Error creating session for userId: ${userId}, parkId: ${parkId}`,
+      error
+    );
+    return {
+      error: "Internal server error during session creation",
+      ok: false,
+    };
+  }
 };
 
 const joinSession = async (qrCode, userId, parkId) => {

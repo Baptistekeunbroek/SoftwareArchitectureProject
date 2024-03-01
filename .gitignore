@@ -14,10 +14,11 @@ build/
 *.log
 *.tmp
 
+
 # Ignore environment-specific files
-.env
-.env.local
-.env.*.local
+# .env
+# .env.local
+# .env.*.local
 
 # Ignore compiled binaries and libraries
 *.exe
