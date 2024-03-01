@@ -68,25 +68,13 @@ const createSession = async (userId, parkId) => {
   }
 };
 
-const joinSession = async (qrCode, userId, parkId) => {
+const joinSession = async (qrCode, userId) => {
   const session = findSessionByQrCode(qrCode);
   if (!session) return false;
   if (session.users.includes(userId)) return false;
-  const bowlingSessionRes = await apiProducts.get(
-    `/findBowlingByParkId?parkId=${parkId}`
-  );
-  if (!bowlingSessionRes.ok) return false;
 
-  const bowlingSession = bowlingSessionRes.product;
-  const newSession = {
-    ...session,
-    cartTotal: session.cartTotal + bowlingSession.price,
-    cartRemaingAmount: session.cartRemaingAmount + bowlingSession.price,
-    cartProductIds: [...session.cartProductIds, bowlingSession.id],
-    users: [...session.users, userId],
-  };
-  sessions[findSessionIndexById(session.id)] = newSession;
-  return newSession;
+  session.users.push(userId);
+  return session;
 };
 
 const sessionPayment = (qrCode, userId, amount) => {

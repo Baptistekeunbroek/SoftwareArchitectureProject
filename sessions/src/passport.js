@@ -20,8 +20,8 @@ module.exports = function (app) {
     new JwtStrategy(opts, async function (jwtPayload, done) {
       try {
         const user = await apiUsers.get(`/customer?id=${jwtPayload.id}`);
-        if (!user.ok) return done(null, false);
-        return done(null, user.user);
+        if (!user) return done(null, false);
+        return done(null, user);
       } catch (error) {
         console.log(error);
       }
@@ -34,8 +34,8 @@ module.exports = function (app) {
     new JwtStrategy(opts, async function (jwtPayload, done) {
       try {
         const user = await apiUsers.get(`/user?id=${jwtPayload.id}`);
-        if (!user.ok) return done(null, false);
-        return done(null, user.user);
+        if (!user) return done(null, false);
+        return done(null, user);
       } catch (error) {
         console.log(error);
       }
@@ -58,9 +58,9 @@ module.exports = function (app) {
     "agent",
     new JwtStrategy(opts, async function (jwtPayload, done) {
       try {
-        const isAgent = await apiUsers.get(`/agent?id=${jwtPayload.id}`);
-        if (!isAgent.ok) return done(null, false);
-        return done(null, isAgent.user);
+        const Agent = await apiUsers.get(`/agent?id=${jwtPayload.id}`);
+        if (!Agent) return done(null, false);
+        return done(null, Agent);
       } catch (error) {
         console.log(error);
       }

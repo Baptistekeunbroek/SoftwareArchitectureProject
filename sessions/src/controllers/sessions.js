@@ -18,7 +18,7 @@ router.post(
   passport.authenticate("customer", { session: false }),
   async (req, res) => {
     try {
-      const userId = req.customer.id;
+      const userId = req.user.id;
       const parkId = parseInt(req.body.parkId, 10);
       if (!parkId) {
         return res
@@ -58,15 +58,12 @@ router.get("/qrCode/:qrCode", (req, res) => {
 router.post(
   "/join/:qrCode",
   passport.authenticate("customer", { session: false }),
-  (req, res) => {
+  async (req, res) => {
     const user = req.user;
-    const parkId = parseInt(req.query.parkId, 10);
     const qrCode = req.params.qrCode;
-    if (!parkId || !qrCode)
-      return res
-        .status(400)
-        .json({ message: "Park ID & qrCode are required", ok: false });
-    const session = joinSession(qrCode, user.id, parkId);
+    if (!qrCode)
+      return res.status(400).json({ message: "qrCode is required", ok: false });
+    const session = await joinSession(qrCode, user.id);
     if (!session)
       return res.status(400).json({ message: "Session not found", ok: false });
     res.status(200).json({ message: "Session joined", ok: true, session });

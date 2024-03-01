@@ -20,6 +20,13 @@ const users = [
     password: "test1234",
     role: "customer",
   },
+  {
+    id: 4,
+    username: "customer2",
+    email: "customer2.customer2@efrei",
+    password: "test1234",
+    role: "customer",
+  },
 ];
 
 module.exports = { users };
