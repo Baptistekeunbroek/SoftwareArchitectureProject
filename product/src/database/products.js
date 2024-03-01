@@ -1,7 +1,7 @@
 const products = [
   {
     id: 1,
-    parkId: 1,
+    parkId: 2,
     name: "Bowling Game",
     price: 100,
     type: "bowling",

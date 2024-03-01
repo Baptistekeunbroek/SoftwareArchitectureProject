@@ -37,26 +37,29 @@ router.post("/register", async (req, res) => {
   res.json(newUser);
 });
 
-router.get(
-  "/agent",
-  passport.authenticate(["session"], { session: false }),
-  (req, res) => {
-    const id = parseInt(req.query.id, 10);
-    if (!id)
-      return res.status(401).json({ message: "Unauthorized", ok: false });
-    const user = users.find((user) => user.id === id && user.role === "agent");
-    if (!user)
-      return res.status(401).json({ message: "Unauthorized", ok: false });
-    res.status(200).json({ ok: true, user });
-  }
-);
+router.get("/agent", (req, res) => {
+  const userId = parseInt(req.query.id); // Convert to integer
+  const user = users.find(
+    (user) => user.id === userId && user.role === "agent"
+  );
+  if (!user) return res.status(404).json({ message: "Agent not found" });
+  res.json(user);
+});
 
-router.get(
-  "/user",
-  passport.authenticate("user", { session: false }),
-  (req, res) => {
-    res.json(req.user);
-  }
-);
+router.get("/user", (req, res) => {
+  const userId = parseInt(req.query.id); // Convert to integer
+  const user = users.find((user) => user.id === userId);
+  if (!user) return res.status(404).json({ message: "User not found" });
+  res.json(user);
+});
+
+router.get("/customer", (req, res) => {
+  const userId = parseInt(req.query.id); // Convert to integer
+  const user = users.find(
+    (user) => user.id === userId && user.role === "customer"
+  );
+  if (!user) return res.status(404).json({ message: "Customer not found" });
+  res.json(user);
+});
 
 module.exports = router;
