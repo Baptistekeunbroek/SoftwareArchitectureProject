@@ -7,7 +7,7 @@ const alleys = [
   },
   {
     parkId: 2,
-    alleyNb: 1,
+    alleyNb: 2,
     qrCode: "anotherqrcodecode",
     isInUse: false,
   },

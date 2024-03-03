@@ -19,18 +19,18 @@ router.post(
   async (req, res) => {
     try {
       const userId = req.user.id;
-      const parkId = parseInt(req.body.parkId, 10);
-      if (!parkId) {
+      const alleyNb = parseInt(req.body.alleyNb, 10);
+      if (!alleyNb) {
         return res
           .status(400)
-          .json({ message: "Park ID is required", ok: false });
+          .json({ message: "alleyNb is required", ok: false });
       }
       if (!userId) {
         return res
           .status(400)
           .json({ message: "UserId is required", ok: false });
       }
-      const session = await createSession(userId, parkId);
+      const session = await createSession(userId, parkId, alleyNb);
       if (!session) {
         return res
           .status(400)
