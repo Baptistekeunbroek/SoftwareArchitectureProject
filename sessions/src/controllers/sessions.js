@@ -4,17 +4,26 @@ const {
   createSession,
   getSessions,
   joinSession,
-  sessionPayment,
-  orderProduct,
+  leaveSession,
+  getSessionsByParkId,
+  findSessionByQrCode,
+  findSessionByUserId,
+  deleteSession
 } = require("../database/sessions");
 
-router.get("/", (req, res) => {
+router.get("/sessions", (req, res) => {
   const sessions = getSessions();
   res.json(sessions);
 });
 
+router.get("/sessions/:parkId", (req, res) => {
+  const parkId = parseInt(req.params.parkId);
+  const sessions = getSessionsByParkId(parkId);
+  res.json(sessions);
+});
+
 router.post(
-  "/",
+  "/session",
   passport.authenticate("customer", { session: false }),
   async (req, res) => {
     try {
@@ -23,35 +32,39 @@ router.post(
       if (!parkId) {
         return res
           .status(400)
-          .json({ message: "Park ID is required", ok: false });
-      }
-      if (!userId) {
-        return res
-          .status(400)
-          .json({ message: "UserId is required", ok: false });
+          .json({ error: "Park ID is required", ok: false });
       }
       const session = await createSession(userId, parkId);
-      if (!session) {
+      if (session.error) {
         return res
           .status(400)
-          .json({ message: "No free alley available", ok: false });
+          .json(session);
       }
       res.status(200).json({ message: "Session created", ok: true, session });
     } catch (error) {
       console.error("Error creating session:", error);
-      res.status(500).json({ message: "Internal server error", ok: false });
+      res.status(500).json({ error: "Internal server error", ok: false });
     }
   }
 );
 
-router.get("/qrCode/:qrCode", (req, res) => {
-  const sessions = getSessions();
+router.get("/session/qrCode/:qrCode", (req, res) => {
   const qrCode = req.params.qrCode;
   if (!qrCode)
-    return res.status(400).json({ message: "QR Code is required", ok: false });
-  const session = sessions.find((session) => session.qrCode === qrCode);
+    return res.status(400).json({ error: "QR Code is required", ok: false });
+  const session = findSessionByQrCode(qrCode);
   if (!session)
-    return res.status(400).json({ message: "Session not found", ok: false });
+    return res.status(400).json({ error: "Session not found", ok: false });
+  res.status(200).json({ ok: true, session });
+});
+
+router.get("/session/user/:userId", (req, res) => {
+  const userId = parseInt(req.params.userId);
+  if (!userId)
+    return res.status(400).json({ error: "UserId is required", ok: false });
+  const session = findSessionByUserId(userId);
+  if (!session)
+    return res.status(400).json({ error: "Session not found", ok: false });
   res.status(200).json({ ok: true, session });
 });
 
@@ -62,42 +75,36 @@ router.post(
     const user = req.user;
     const qrCode = req.params.qrCode;
     if (!qrCode)
-      return res.status(400).json({ message: "qrCode is required", ok: false });
+      return res.status(400).json({ error: "qrCode is required", ok: false });
     const session = await joinSession(qrCode, user.id);
-    if (!session)
-      return res.status(400).json({ message: "Session not found", ok: false });
+    if (session.error)
+      return res.status(400).json(session);
     res.status(200).json({ message: "Session joined", ok: true, session });
   }
 );
 
-router.post("/order/:qrCode", async (req, res) => {
-  const user = req.user;
-  const qrCode = req.params.qrCode;
-  if (!qrCode)
-    return res.status(400).json({ message: "QR Code is required", ok: false });
-  const productId = parseInt(req.query.productId, 10);
-  if (!productId)
-    return res
-      .status(400)
-      .json({ message: "Product ID is required", ok: false });
-  const session = await orderProduct(qrCode, user.id, productId);
-  if (!session)
-    return res.status(400).json({ message: "Session not found", ok: false });
-  res.status(200).json({ message: "Product order done", ok: true, session });
-});
+router.post(
+  "/leave/:qrCode",
+  passport.authenticate("customer", { session: false }),
+  async (req, res) => {
+    const user = req.user;
+    const qrCode = req.params.qrCode;
+    if (!qrCode)
+      return res.status(400).json({ error: "qrCode is required", ok: false });
+    const session = await leaveSession(qrCode, user.id);
+    if (session.error)
+      return res.status(400).json(session);
+    res.status(200).json({ message: "Session left", ok: true, session });
+  }
+);
 
-router.post("/payment/:qrCode", (req, res) => {
-  const user = req.user;
-  const amount = parseInt(req.query.amount, 10);
-  const qrCode = req.params.qrCode;
-  if (!amount)
-    return res.status(400).json({ message: "Amount is required", ok: false });
-  const session = sessionPayment(qrCode, user.id, amount);
-  if (!session.ok)
-    return res.status(400).json({ message: session.message, ok: false });
-  res
-    .status(200)
-    .json({ message: "Payment done", ok: true, session: session.session });
+router.delete("/session/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  if (!id)
+    return res.status(400).json({ error: "Session ID is required", ok: false });
+  const result = deleteSession(id);
+  if (result.error) return res.status(400).json(result);
+  else res.status(200).json(result)
 });
 
 module.exports = router;

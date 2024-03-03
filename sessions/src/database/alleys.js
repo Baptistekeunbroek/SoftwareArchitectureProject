@@ -14,19 +14,9 @@ const alleys = [
 ];
 
 const findAvailableAlley = (parkId) => {
-  console.log("Searching for available alley for park ID:", parkId);
-  console.log("All alleys:", alleys);
-
   const availableAlley = alleys.find(
     (alley) => alley.isInUse === false && alley.parkId === parkId
   );
-
-  if (availableAlley) {
-    console.log("Available alley found:", availableAlley);
-  } else {
-    console.log("No available alley found for park ID:", parkId);
-  }
-
   return availableAlley;
 };
 
