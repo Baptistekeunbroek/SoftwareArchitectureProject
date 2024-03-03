@@ -1,57 +1,44 @@
 const products = [
   {
     id: 1,
-    parkId: 2,
-    name: "Bowling Game",
-    price: 100,
-    type: "bowling",
+    name: "Bowling Ticket",
+    price: 20,
+    type: "Ticket",
   },
   {
     id: 2,
-    parkId: 1,
-    name: "Drink",
-    price: 200,
-    type: "snack",
+    name: "Coca-Cola",
+    price: 8,
+    type: "Drink",
   },
   {
     id: 3,
-    parkId: 1,
-    name: "Snack",
-    price: 300,
-    type: "snack",
+    name: "Peanuts",
+    price: 5,
+    type: "Snack",
   },
   {
     id: 4,
-    parkId: 1,
     name: "French fries",
-    price: 400,
-    type: "snack",
+    price: 10,
+    type: "Snack",
   },
   {
     id: 5,
-    parkId: 1,
-    name: "Crisps",
-    price: 500,
-    type: "snack",
+    name: "Popcorn",
+    price: 9,
+    type: "Snack",
   },
 ];
 
-let nextProductId = 6;
+let nextProductId = products.length + 1;
 
-const findBowlingByParkId = (parkId) =>
-  products.find(
-    (product) => product.parkId === parkId && product.type === "bowling"
-  );
+const findProductById = (productId) =>
+  products.find((product) => product.id === productId);
 
-const findProductByIdAndParkId = (parkId, productId) =>
-  products.find(
-    (product) => product.parkId === parkId && product.id === productId
-  );
-
-const createProduct = (parkId, name, price, type) => {
+const createProduct = (name, price, type) => {
   const product = {
     id: nextProductId,
-    parkId,
     name,
     price,
     type,
@@ -63,9 +50,6 @@ const createProduct = (parkId, name, price, type) => {
 
 const getProducts = () => products;
 
-const getProductsByParkId = (parkId) =>
-  products.filter((product) => product.parkId === parkId);
-
 const deleteProduct = (productId) => {
   const index = products.findIndex((product) => product.id === productId);
   if (index === -1) return false;
@@ -74,10 +58,19 @@ const deleteProduct = (productId) => {
 };
 
 module.exports = {
-  getProductsByParkId,
-  findBowlingByParkId,
-  findProductByIdAndParkId,
+  findProductById,
   createProduct,
   getProducts,
   deleteProduct,
 };
+
+/*
+const getProductsByParkId = (parkId) =>
+  products.filter((product) => product.parkId === parkId);
+  
+  const findBowlingByParkId = (parkId) =>
+  products.find(
+    (product) => product.parkId === parkId && product.type === "Ticket"
+  );
+
+*/

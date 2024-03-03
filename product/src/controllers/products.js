@@ -2,47 +2,88 @@ const {
   createProduct,
   deleteProduct,
   getProducts,
-  getProductsByParkId,
-  findBowlingByParkId,
-  findProductByIdAndParkId,
+  findProductById,
 } = require("../database/products");
 const passport = require("passport");
 const apiSessions = require("../utils/apiSessions");
 const router = require("express").Router();
 
+// Get all products
+router.get("/", (req, res) => {
+  const products = getProducts();
+  res.json(products);
+});
+
+//Get a product by ID
+router.get("/:productId", (req, res) => {
+  const productId = req.params.productId;
+  if (!productId)
+    return res
+      .status(400)
+      .json({ message: "Product ID is required", ok: false });
+  const product = findProductById(parseInt(productId, 10));
+  if (!product)
+    return res.status(400).json({ message: "Product not found", ok: false });
+  res.status(200).json({ ok: true, product });
+});
+
+// Create a new product
 router.post(
   "/",
-  passport.authenticate(["admin"], { session: false }),
+  passport.authenticate(["agent"], { session: false }),
   (req, res) => {
-    const { parkId, name, price, type } = req.body;
-    if (!parkId || !name || !price || !type) {
+    const { name, price, type } = req.body;
+    if (!name || !price || !type) {
       return res
         .status(400)
         .json({ message: "All fields are required", ok: false });
     }
-    const product = createProduct(parkId, name, price, type);
+    const product = createProduct(name, price, type);
     res.status(200).json({ ok: true, product });
   }
 );
 
-router.get(
-  "/getCatalogForQRCode",
-  passport.authenticate(["user", "admin"], { session: false }),
-  async (req, res) => {
-    const qrCode = req.query.qrCode;
-    const session = await apiSessions.get(`/qrCode/${qrCode}`);
-    if (!session.ok)
-      return res.status(400).json({ message: session.message, ok: false });
-    const products = getProductsByParkId(session.session.parkId);
-    res.status(200).json({ ok: true, products });
+// Delete a product
+router.delete(
+  "/:productId",
+  passport.authenticate(["agent"], { session: false }),
+  (req, res) => {
+    const productId = req.params.productId;
+    if (!productId)
+      return res
+        .status(400)
+        .json({ message: "Product ID is required", ok: false });
+    const deleted = deleteProduct(parseInt(productId, 10));
+    if (!deleted)
+      return res.status(400).json({ message: "Product not found", ok: false });
+    res.status(200).json({ message: "Product deleted", ok: true });
   }
 );
 
-router.get("/", (req, res) => {
-  const products = getProducts();
-  res.status(200).json({ ok: true, products });
-});
+//Update a product
+router.put(
+  "/:productId",
+  passport.authenticate(["agent"], { session: false }),
+  (req, res) => {
+    const productId = req.params.productId;
+    const { name, price, type } = req.body;
+    if (!productId)
+      return res
+        .status(400)
+        .json({ message: "Product ID is required", ok: false });
+    const product = findProductById(parseInt(productId, 10));
+    if (!product)
+      return res.status(400).json({ message: "Product not found", ok: false });
+    if (name) product.name = name;
+    if (price) product.price = price;
+    if (type) product.type = type;
+    res.status(200).json({ message: "Product updated", ok: true, product });
+  }
+);
 
+module.exports = router;
+
+/*
 router.get(
   "/findBowlingByParkId",
   passport.authenticate(["session"], { session: false }),
@@ -79,20 +120,16 @@ router.get(
   }
 );
 
-router.delete(
-  "/:productId",
-  passport.authenticate(["admin"], { session: false }),
-  (req, res) => {
-    const productId = req.params.productId;
-    if (!productId)
-      return res
-        .status(400)
-        .json({ message: "Product ID is required", ok: false });
-    const deleted = deleteProduct(parseInt(productId, 10));
-    if (!deleted)
-      return res.status(400).json({ message: "Product not found", ok: false });
-    res.status(200).json({ message: "Product deleted", ok: true });
+router.get(
+  "/getCatalogForQRCode",
+  passport.authenticate(["user", "agent"], { session: false }),
+  async (req, res) => {
+    const qrCode = req.query.qrCode;
+    const session = await apiSessions.get(`/qrCode/${qrCode}`);
+    if (!session.ok)
+      return res.status(400).json({ message: session.message, ok: false });
+    const products = getProductsByParkId(session.session.parkId);
+    res.status(200).json({ ok: true, products });
   }
 );
-
-module.exports = router;
+*/

@@ -28,8 +28,8 @@ router.post(
   async (req, res) => {
     try {
       const userId = req.user.id;
-      const parkId = parseInt(req.body.parkId, 10);
-      if (!parkId) {
+      const alleyNb = parseInt(req.body.alleyNb, 10);
+      if (!alleyNb) {
         return res
           .status(400)
           .json({ error: "Park ID is required", ok: false });
