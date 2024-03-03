@@ -4,13 +4,20 @@ const sessions = [];
 
 let sessionNextId = 1;
 
+const getSessions = () => sessions;
+
+const getSessionsByParkId = (parkId) => 
+  sessions.filter((session) => session.parkId === parkId);
+
 const findSessionByQrCode = (qrCode) =>
   sessions.find((session) => session.qrCode === qrCode);
 
-const getSessions = () => sessions;
+const findSessionByUserId = (userId) =>
+  sessions.find((session) => session.users.includes(userId));
 
 const findSessionIndexById = (id) =>
   sessions.findIndex((session) => session.id === id);
+
 const createSession = async (userId, parkId) => {
   // First, find an available alley for the given parkId.
   const alley = findAvailableAlley(parkId);
@@ -20,32 +27,15 @@ const createSession = async (userId, parkId) => {
   }
 
   try {
-    // Make the API call to get bowling session details.
-    const bowlingSessionRes = await apiProducts.get(
-      `/findBowlingByParkId?parkId=${parkId}`
-    );
-
-    // Check if the API call was successful and the response is OK.
-    if (!bowlingSessionRes.ok || !bowlingSessionRes.product) {
-      console.error(
-        `API call to findBowlingByParkId failed for parkId: ${parkId}`
-      );
-      return { error: "Error fetching bowling session details", ok: false };
-    }
-
-    const bowlingSession = bowlingSessionRes.product;
-
     // Create the session object.
     const session = {
       id: sessionNextId++,
       ownerUserId: userId,
       users: [userId],
       parkId,
-      cartTotal: bowlingSession.price,
-      cartProductIds: [bowlingSession.id],
-      cartRemainingAmount: bowlingSession.price,
-      isStarted: false,
+      alleyNb: alley.alleyNb,
       qrCode: alley.qrCode,
+      orders: []
     };
 
     // Add the session to the sessions array.
@@ -55,7 +45,7 @@ const createSession = async (userId, parkId) => {
     modifyAlley(parkId, alley.alleyNb, true);
 
     // Return the successfully created session.
-    return { ok: true, session };
+    return { session };
   } catch (error) {
     console.error(
       `Error creating session for userId: ${userId}, parkId: ${parkId}`,
@@ -70,60 +60,40 @@ const createSession = async (userId, parkId) => {
 
 const joinSession = async (qrCode, userId) => {
   const session = findSessionByQrCode(qrCode);
-  if (!session) return false;
-  if (session.users.includes(userId)) return false;
+  if (!session) return { error: "Session not found", ok: false };
+  if (session.users.includes(userId)) return { error: "User already in session", ok: false };
 
   session.users.push(userId);
   return session;
 };
 
-const sessionPayment = (qrCode, userId, amount) => {
+const leaveSession = async (qrCode, userId) => {
   const session = findSessionByQrCode(qrCode);
-  if (!session) return { message: "Session not found", ok: false };
-  if (!session.users.includes(userId))
-    return { message: "User not found", ok: false };
-  if (amount > session.cartRemaingAmount)
-    return { message: "Amount is too high", ok: false };
-  const newSession = {
-    ...session,
-    cartRemaingAmount: session.cartRemaingAmount - amount,
-    isStarted: session.cartRemaingAmount - amount === 0,
-  };
-  sessions[findSessionIndexById(session.id)] = newSession;
-  return { message: "Payment done", ok: true, session: newSession };
-};
-
-const orderProduct = async (qrCode, userId, productId) => {
-  const session = findSessionByQrCode(qrCode);
-  if (!session) return false;
-  if (!session.users.includes(userId)) return false;
-  const productRes = await apiProducts.get(
-    `/findProductByIdAndParkId?parkId=${session.parkId}&productId=${productId}`
-  );
-  if (!productRes.ok) return false;
-
-  const product = productRes.product;
-  const newSession = {
-    ...session,
-    cartTotal: session.cartTotal + product.price,
-    cartRemaingAmount: session.cartRemaingAmount + product.price,
-    cartProductIds: [...session.cartProductIds, product.id],
-  };
-  sessions[findSessionIndexById(session.id)] = newSession;
-  return newSession;
+  if (!session) return { error: "Session not found", ok: false };
+  if (session.ownerUserId == userId) return { error: "Owner can't leave", ok: false };
+  if (!session.users.includes(userId)) return { error: "User not in session", ok: false };
+  const index = session.users.indexOf(userId);
+  if (index > -1) { // only splice array when item is found
+    session.users.splice(index, 1); 
+  }
+  return session;
 };
 
 const deleteSession = (id) => {
   const orderIndex = sessions.findIndex((session) => session.id === id);
+  if (orderIndex == -1) return { error: "Session not found", ok: false };
+  modifyAlley(sessions[orderIndex].parkId, sessions[orderIndex].alleyNb, false);
   sessions.splice(orderIndex, 1);
+  return { message: "Session " + id + " deleted", ok: true }
 };
 
 module.exports = {
   findSessionByQrCode,
+  findSessionByUserId,
+  getSessionsByParkId,
   createSession,
   deleteSession,
   joinSession,
-  sessionPayment,
-  orderProduct,
+  leaveSession,
   getSessions,
 };
