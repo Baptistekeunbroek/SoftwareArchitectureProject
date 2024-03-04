@@ -1,51 +1,72 @@
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt');
+const passport = require("passport");
+const apiUsers = require("./utils/apiUsers");
+const JwtStrategy = require("passport-jwt").Strategy;
+const CustomStrategy = require("passport-custom").Strategy;
+const ExtractJwt = require("passport-jwt").ExtractJwt;
 
-// Importez ici votre modèle d'utilisateur (par exemple, User) et votre logique d'accès à la base de données
+function getToken(req) {
+  let token = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
+  if (!token) token = req.cookies?.jwt;
+  return token;
+}
 
-// Configurez la stratégie locale de Passport
-passport.use(new LocalStrategy({
-  usernameField: 'email', // Remplacez par le champ utilisé pour l'authentification (par exemple, 'username')
-  passwordField: 'password' // Remplacez par le champ utilisé pour le mot de passe (par exemple, 'password')
-}, async (email, password, done) => {
-  try {
-    // Recherchez l'utilisateur dans la base de données en utilisant l'email fourni
-    const user = await User.findOne({ email });
+module.exports = function (app) {
+  const opts = {};
+  opts.jwtFromRequest = getToken;
+  opts.secretOrKey = process.env.JWT_SECRET;
 
-    // Si l'utilisateur n'est pas trouvé ou le mot de passe ne correspond pas, renvoyez une erreur
-    if (!user || !bcrypt.compareSync(password, user.password)) {
-      return done(null, false, { message: 'Identifiants invalides' });
-    }
-
-    // Si l'utilisateur est trouvé et le mot de passe correspond, renvoyez l'utilisateur
-    return done(null, user);
-  } catch (error) {
-    return done(error);
-  }
-}));
-
-// Sérialisez l'utilisateur pour le stocker dans la session
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-// Désérialisez l'utilisateur à partir de la session
-passport.deserializeUser(async (id, done) => {
-  try {
-    // Recherchez l'utilisateur dans la base de données en utilisant l'ID fourni
-    const user = await User.findById(id);
-
-    // Si l'utilisateur n'est pas trouvé, renvoyez une erreur
-    if (!user) {
+  passport.use(
+    "customer",
+    new JwtStrategy(opts, async function (jwtPayload, done) {
+      try {
+        const user = await apiUsers.get(`/customer?id=${jwtPayload.id}`);
+        if (!user) return done(null, false);
+        return done(null, user);
+      } catch (error) {
+        console.log(error);
+      }
       return done(null, false);
-    }
+    })
+  );
 
-    // Si l'utilisateur est trouvé, renvoyez l'utilisateur
-    return done(null, user);
-  } catch (error) {
-    return done(error);
-  }
-});
+  passport.use(
+    "user",
+    new JwtStrategy(opts, async function (jwtPayload, done) {
+      try {
+        const user = await apiUsers.get(`/user?id=${jwtPayload.id}`);
+        if (!user) return done(null, false);
+        return done(null, user);
+      } catch (error) {
+        console.log(error);
+      }
+      return done(null, false);
+    })
+  );
 
-module.exports = passport;
+  passport.use(
+    "session",
+    new CustomStrategy(function (req, done) {
+      const apiKey = req.headers["x-api-key"];
+      if (!apiKey || apiKey !== process.env.API_KEY) {
+        return done(null, false);
+      }
+      done(null, true);
+    })
+  );
+
+  passport.use(
+    "agent",
+    new JwtStrategy(opts, async function (jwtPayload, done) {
+      try {
+        const Agent = await apiUsers.get(`/agent?id=${jwtPayload.id}`);
+        if (!Agent) return done(null, false);
+        return done(null, Agent);
+      } catch (error) {
+        console.log(error);
+      }
+      return done(null, false);
+    })
+  );
+
+  app.use(passport.initialize());
+};
