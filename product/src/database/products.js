@@ -63,14 +63,3 @@ module.exports = {
   getProducts,
   deleteProduct,
 };
-
-/*
-const getProductsByParkId = (parkId) =>
-  products.filter((product) => product.parkId === parkId);
-  
-  const findBowlingByParkId = (parkId) =>
-  products.find(
-    (product) => product.parkId === parkId && product.type === "Ticket"
-  );
-
-*/
