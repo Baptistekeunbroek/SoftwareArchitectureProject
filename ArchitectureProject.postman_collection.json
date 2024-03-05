@@ -1,0 +1,1163 @@
+{
+	"info": {
+		"_postman_id": "362506b7-71e2-4f74-9fbd-6579407feebb",
+		"name": "ArchitectureProject",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17860055",
+		"_collection_link": "https://universal-crescent-479058.postman.co/workspace/My-Workspace~dc5bef61-d0e7-40e9-87f9-e595ce6f1e97/collection/17860055-362506b7-71e2-4f74-9fbd-6579407feebb?action=share&source=collection_link&creator=17860055"
+	},
+	"item": [
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "ListOfAllProducts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5053/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5053",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFnZW50IiwiaWF0IjoxNzA5NDcyNTYzLCJleHAiOjE3MDk1NTg5NjN9.k6uLMDP8JBOfG1EOVRajAjLxWZ-Va3_R3fFRwESkdN8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5053/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5053",
+							"path": [
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFnZW50IiwiaWF0IjoxNzA5NDcyNTYzLCJleHAiOjE3MDk1NTg5NjN9.k6uLMDP8JBOfG1EOVRajAjLxWZ-Va3_R3fFRwESkdN8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"id\": 3,\n        \"name\": \"Peanuts\",\n        \"price\": 15,\n        \"Type\": \"Snack\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5053/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5053",
+							"path": [
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFnZW50IiwiaWF0IjoxNzA5NDcyNTYzLCJleHAiOjE3MDk1NTg5NjN9.k6uLMDP8JBOfG1EOVRajAjLxWZ-Va3_R3fFRwESkdN8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"name\": \"Beer\",\n        \"price\": 9,\n        \"type\": \"Drink\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5053/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5053",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5053/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5053",
+							"path": [
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "order",
+			"item": [
+				{
+					"name": "Get Orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5051/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5051",
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Orders By Session ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5051/orders/session/:sessionId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5051",
+							"path": [
+								"orders",
+								"session",
+								":sessionId"
+							],
+							"variable": [
+								{
+									"key": "sessionId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Orders By User ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5051/orders/user/:userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5051",
+							"path": [
+								"orders",
+								"user",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Finished Orders By Session ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5051/orders/session/finished/:sessionId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5051",
+							"path": [
+								"orders",
+								"session",
+								"finished",
+								":sessionId"
+							],
+							"variable": [
+								{
+									"key": "sessionId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Finished Orders By User ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5051/orders/user/finished/:userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5051",
+							"path": [
+								"orders",
+								"user",
+								"finished",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Finished Orders by ParkID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5051/orders/park/finished/:parkId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5051",
+							"path": [
+								"orders",
+								"park",
+								"finished",
+								":parkId"
+							],
+							"variable": [
+								{
+									"key": "parkId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5051/order/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5051",
+							"path": [
+								"order",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Empty Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sZSI6ImN1c3RvbWVyIiwiaWF0IjoxNzA5NjQ3NjE0LCJleHAiOjE3MDk3MzQwMTR9.jbPJWGlW-0LOz3mFQ2o6uO6JWr7D0ZzMEDvbUxiljXU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5051/order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5051",
+							"path": [
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Product to Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sZSI6ImN1c3RvbWVyIiwiaWF0IjoxNzA5NjQ3NjE0LCJleHAiOjE3MDk3MzQwMTR9.jbPJWGlW-0LOz3mFQ2o6uO6JWr7D0ZzMEDvbUxiljXU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productId\": 2,\r\n    \"number\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5051/addProductToOrder",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5051",
+							"path": [
+								"addProductToOrder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sZSI6ImN1c3RvbWVyIiwiaWF0IjoxNzA5NjQ3NjE0LCJleHAiOjE3MDk3MzQwMTR9.jbPJWGlW-0LOz3mFQ2o6uO6JWr7D0ZzMEDvbUxiljXU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Hugo\",\r\n    \"email\": \"hugo@efrei.net\",\r\n    \"phoneNumber\": \"061234567890\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5051/sendOrder",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5051",
+							"path": [
+								"sendOrder"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "payment",
+			"item": [
+				{
+					"name": "payForHimself",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sZSI6ImN1c3RvbWVyIiwiaWF0IjoxNzA5NjQ3NjE0LCJleHAiOjE3MDk3MzQwMTR9.jbPJWGlW-0LOz3mFQ2o6uO6JWr7D0ZzMEDvbUxiljXU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" : \"hugo@efrei.net\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5054/payForHimself",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5054",
+							"path": [
+								"payForHimself"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "payForGroup",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sZSI6ImN1c3RvbWVyIiwiaWF0IjoxNzA5NjQ3NjE0LCJleHAiOjE3MDk3MzQwMTR9.jbPJWGlW-0LOz3mFQ2o6uO6JWr7D0ZzMEDvbUxiljXU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" : \"hugo@efrei.net\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5054/payForGroup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5054",
+							"path": [
+								"payForGroup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "payAmount",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sZSI6ImN1c3RvbWVyIiwiaWF0IjoxNzA5NjQ3NjE0LCJleHAiOjE3MDk3MzQwMTR9.jbPJWGlW-0LOz3mFQ2o6uO6JWr7D0ZzMEDvbUxiljXU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"hugo@efrei.net\",\r\n    \"amount\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5054/payAmount",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5054",
+							"path": [
+								"payAmount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pay cash",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFnZW50IiwiaWF0IjoxNzA5NjUxODk3LCJleHAiOjE3MDk3MzgyOTd9.Yq7XIEOBb7RcFXvBRJAOWknPd7Psq7MxW8JZjkSIQAA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"sessionId\": 1,\r\n    \"amount\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5054/setAmountManually",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5054",
+							"path": [
+								"setAmountManually"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sessions",
+			"item": [
+				{
+					"name": "Get Sessions",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFnZW50IiwiaWF0IjoxNzA5MzA1NDU2LCJleHAiOjE3MDkzOTE4NTZ9.MPN5IgILbv5hA_2fN6WBEF0bPYbwcKTmm8ZV7I5oXsk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5052/sessions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5052",
+							"path": [
+								"sessions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Sessions by Park Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFnZW50IiwiaWF0IjoxNzA5MzA1NDU2LCJleHAiOjE3MDkzOTE4NTZ9.MPN5IgILbv5hA_2fN6WBEF0bPYbwcKTmm8ZV7I5oXsk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5052/sessions/:parkId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5052",
+							"path": [
+								"sessions",
+								":parkId"
+							],
+							"variable": [
+								{
+									"key": "parkId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Session by QR Code",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5052/session/qrCode/:qrCode",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5052",
+							"path": [
+								"session",
+								"qrCode",
+								":qrCode"
+							],
+							"variable": [
+								{
+									"key": "qrCode",
+									"value": "anotherqrcodecode"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Session by UserId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5052/session/user/:userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5052",
+							"path": [
+								"session",
+								"user",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Session",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sZSI6ImN1c3RvbWVyIiwiaWF0IjoxNzA5NjQ3NjE0LCJleHAiOjE3MDk3MzQwMTR9.jbPJWGlW-0LOz3mFQ2o6uO6JWr7D0ZzMEDvbUxiljXU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"parkId\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5052/session",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5052",
+							"path": [
+								"session"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Session",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5052/session/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5052",
+							"path": [
+								"session",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Join Session",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwicm9sZSI6ImN1c3RvbWVyIiwiaWF0IjoxNzA5NDcwMzE1LCJleHAiOjE3MDk1NTY3MTV9.YQVx1eLhawjhZ2tGIjCypoW2L6vqMTjwXd_J_DgP3Mc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5052/join/:qrCode",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5052",
+							"path": [
+								"join",
+								":qrCode"
+							],
+							"variable": [
+								{
+									"key": "qrCode",
+									"value": "anotherqrcodecode"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leave Session",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sZSI6ImN1c3RvbWVyIiwiaWF0IjoxNzA5NDY5NjU0LCJleHAiOjE3MDk1NTYwNTR9.PRbR79EIXNL-T7tUK6_z6a21B35oC-PMSCboLhutaTc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5052/leave/:qrCode",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5052",
+							"path": [
+								"leave",
+								":qrCode"
+							],
+							"variable": [
+								{
+									"key": "qrCode",
+									"value": "anotherqrcodecode"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Order ID to Session",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orderId\": 1,\r\n    \"sessionId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5052/session/order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5052",
+							"path": [
+								"session",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Price",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"sessionId\": 1,\r\n    \"amount\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5052/updatePrice",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5052",
+							"path": [
+								"updatePrice"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Login Agent",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" : \"agent.agent@efrei\",\n    \"password\" : \"test1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5050/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5050",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5050",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5050"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"BaptisteK\",\n    \"email\" : \"baptiste@efrei.efrei\",\n    \"password\" : \"test1234\",\n    \"role\" : \"agent\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5050/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5050",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get an Agent",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFnZW50IiwiaWF0IjoxNzA5MzA1NDU2LCJleHAiOjE3MDkzOTE4NTZ9.MPN5IgILbv5hA_2fN6WBEF0bPYbwcKTmm8ZV7I5oXsk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "id",
+								"value": "1",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5050/agent?id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5050",
+							"path": [
+								"agent"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5050/user?id=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5050",
+							"path": [
+								"user"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Customer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5050/customer?id=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5050",
+							"path": [
+								"customer"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Customer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" : \"customer.customer@efrei\",\n    \"password\" : \"test1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5050/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5050",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Customer 2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" : \"customer2.customer2@efrei\",\n    \"password\" : \"test1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5050/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5050",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
