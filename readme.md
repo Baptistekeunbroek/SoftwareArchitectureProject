@@ -24,7 +24,7 @@ For Linux :
 ./install_and_start.sh
 ```
 
-You can also open a terminal in each directory (orders, payment, product, sessions and users) and do the following :
+> 2. You can also open a terminal in each directory (orders, payment, product, sessions and users) and do the following :
 ```
 npm install
 npm start
