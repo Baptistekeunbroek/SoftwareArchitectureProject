@@ -9,7 +9,8 @@ const {
   findSessionByQrCode,
   findSessionByUserId,
   deleteSession,
-  addOrderToSession
+  addOrderToSession,
+  updatePrice
 } = require("../database/sessions");
 
 router.get("/sessions", (req, res) => {
@@ -66,7 +67,7 @@ router.get("/session/user/:userId", (req, res) => {
   const session = findSessionByUserId(userId);
   if (!session)
     return res.status(400).json({ error: "Session not found", ok: false });
-  res.status(200).json({ ok: true, session });
+  res.status(200).json(session);
 });
 
 router.post(
@@ -119,6 +120,19 @@ router.post("/session/order", async (req, res) => {
     if (result.error) return res.status(400).json(result);
     else res.status(200).json(result)
   }
+);
+
+router.post("/updatePrice", async (req, res) => {
+  const sessionId = parseInt(req.body.sessionId);
+  if (!sessionId)
+    return res.status(400).json({ error: "SessionId is required", ok: false });
+  const amount = parseInt(req.body.amount);
+  if (amount == undefined)
+    return res.status(400).json({ error: "Amount is required", ok: false });
+  const result = updatePrice(sessionId, amount);
+  if (result.error) return res.status(400).json(result);
+  else res.status(200).json(result)
+}
 );
 
 module.exports = router;

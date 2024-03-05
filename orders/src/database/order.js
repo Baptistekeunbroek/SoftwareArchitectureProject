@@ -28,12 +28,12 @@ const findOrderById = (id) =>
 
 const createEmptyOrder = async (userId) => {
     try {
-        const result = await apiSessions.get(`/session/user/${userId}`);   
+        const session = await apiSessions.get(`/session/user/${userId}`);   
         const order = {
             id: orderNextId++,
             userId: userId,
-            sessionId: result.session.id,
-            parkId: result.session.parkId,
+            sessionId: session.id,
+            parkId: session.parkId,
             products: [],
             isFinished: false,
             totalPrice: 0

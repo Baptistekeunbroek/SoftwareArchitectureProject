@@ -98,6 +98,13 @@ const addOrderToSession = (order, sessionId) => {
   return { message: "Order " + orderId + " added", ok: true, session }
 };
 
+const updatePrice = (sessionId, amount) => {
+  const session = findSessionById(sessionId);
+  if (!session) return { error: "Session not found", ok: false };
+  session.totalPrice = amount
+  return { message: "Amount modified", ok: true, session }
+}
+
 module.exports = {
   findSessionByQrCode,
   findSessionByUserId,
@@ -107,5 +114,6 @@ module.exports = {
   joinSession,
   leaveSession,
   getSessions,
-  addOrderToSession
+  addOrderToSession,
+  updatePrice
 };

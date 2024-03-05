@@ -12,6 +12,6 @@ app.use(bodyParser.json({ limit: "50mb" }));
 // Routes
 app.use(require("./controllers/orders"));
 
-app.listen(process.env.PORT || 6000, () =>
-  console.log(`Server running on http://localhost:${process.env.PORT || 6000}`)
+app.listen(process.env.PORT || 5051, () =>
+  console.log(`Server running on http://localhost:${process.env.PORT || 5051}`)
 );

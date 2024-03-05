@@ -1,25 +1,17 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const paymentController = require('./controllers/paymentController');
+require("dotenv").config();
+const express = require("express");
+const bodyParser = require("body-parser");
 
-
-// Import required modules
-
-
-
-// Create an instance of the Express application
 const app = express();
 
-// Use middleware
-app.use(bodyParser.json());
-app.use(cors());
+require("./passport")(app);
 
-// Register routes and controllers
-app.use('/route1', paymentController);
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: "50mb" }));
 
+// Routes
+app.use(require("./controllers/paymentRoutes"));
 
-// Start the server
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
-});
+app.listen(process.env.PORT || 5054, () =>
+  console.log(`Server running on http://localhost:${process.env.PORT || 5054}`)
+);
