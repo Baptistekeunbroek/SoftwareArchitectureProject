@@ -8,7 +8,8 @@ const {
   getSessionsByParkId,
   findSessionByQrCode,
   findSessionByUserId,
-  deleteSession
+  deleteSession,
+  addOrderToSession
 } = require("../database/sessions");
 
 router.get("/sessions", (req, res) => {
@@ -106,5 +107,18 @@ router.delete("/session/:id", (req, res) => {
   if (result.error) return res.status(400).json(result);
   else res.status(200).json(result)
 });
+
+router.post("/session/order", async (req, res) => {
+    const order = req.body.order;
+    const sessionId = parseInt(req.body.sessionId);
+    if (!order)
+      return res.status(400).json({ error: "Order is required", ok: false });
+    if (!sessionId)
+      return res.status(400).json({ error: "SessionId is required", ok: false });
+    const result = addOrderToSession(order, sessionId);
+    if (result.error) return res.status(400).json(result);
+    else res.status(200).json(result)
+  }
+);
 
 module.exports = router;

@@ -42,18 +42,7 @@ module.exports = function (app) {
       return done(null, false);
     })
   );
-
-  passport.use(
-    "session",
-    new CustomStrategy(function (req, done) {
-      const apiKey = req.headers["x-api-key"];
-      if (!apiKey || apiKey !== process.env.API_KEY) {
-        return done(null, false);
-      }
-      done(null, true);
-    })
-  );
-
+  
   passport.use(
     "agent",
     new JwtStrategy(opts, async function (jwtPayload, done) {

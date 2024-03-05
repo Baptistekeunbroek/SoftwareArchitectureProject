@@ -1,5 +1,4 @@
 const { findAvailableAlley, modifyAlley } = require("./alleys");
-const apiProducts = require("../utils/apiProducts");
 const sessions = [];
 
 let sessionNextId = 1;
@@ -15,8 +14,8 @@ const findSessionByQrCode = (qrCode) =>
 const findSessionByUserId = (userId) =>
   sessions.find((session) => session.users.includes(userId));
 
-const findSessionIndexById = (id) =>
-  sessions.findIndex((session) => session.id === id);
+const findSessionById = (id) =>
+  sessions.find((session) => session.id === id);
 
 const createSession = async (userId, parkId) => {
   // First, find an available alley for the given parkId.
@@ -35,7 +34,8 @@ const createSession = async (userId, parkId) => {
       parkId,
       alleyNb: alley.alleyNb,
       qrCode: alley.qrCode,
-      orders: []
+      orders: [],
+      totalPrice: 20
     };
 
     // Add the session to the sessions array.
@@ -62,7 +62,7 @@ const joinSession = async (qrCode, userId) => {
   const session = findSessionByQrCode(qrCode);
   if (!session) return { error: "Session not found", ok: false };
   if (session.users.includes(userId)) return { error: "User already in session", ok: false };
-
+  session.totalPrice += 20;
   session.users.push(userId);
   return session;
 };
@@ -76,6 +76,7 @@ const leaveSession = async (qrCode, userId) => {
   if (index > -1) { // only splice array when item is found
     session.users.splice(index, 1); 
   }
+  session.totalPrice -= 20;
   return session;
 };
 
@@ -87,6 +88,16 @@ const deleteSession = (id) => {
   return { message: "Session " + id + " deleted", ok: true }
 };
 
+const addOrderToSession = (order, sessionId) => {
+  const session = findSessionById(sessionId);
+  const orderId = parseInt(order.id);
+  session.totalPrice += parseInt(order.totalPrice);
+  if (!session) return { error: "Session not found", ok: false };
+  if (session.orders.includes(orderId)) return { error: "Order already in session", ok: false };
+  session.orders.push(orderId);
+  return { message: "Order " + orderId + " added", ok: true, session }
+};
+
 module.exports = {
   findSessionByQrCode,
   findSessionByUserId,
@@ -96,4 +107,5 @@ module.exports = {
   joinSession,
   leaveSession,
   getSessions,
+  addOrderToSession
 };
